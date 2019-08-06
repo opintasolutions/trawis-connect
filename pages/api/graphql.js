@@ -1,28 +1,23 @@
-import { ApolloServer, gql } from 'apollo-server-micro'
+// npm packages
+import {ApolloServer} from 'apollo-server-micro';
+import mongoose from 'mongoose';
+// our packages
+import {mongoDB_uri} from '../../secrets.js';
+import typeDefs from '../../data/typeDefs.js';
+import resolvers from '../../data/resolvers.js';
 
-const typeDefs = gql`
-  type Query {
-    users: [User!]!
-  }
-  type User {
-    name: String
-  }
-`
+// connect to database
+mongoose
+  .connect(mongoDB_uri, {useNewUrlParser: true})
+  .then(() => console.log('DB Connected'))
+  .catch(err => console.log('There was an error ', err));
 
-const resolvers = {
-  Query: {
-    users (parent, args, context) {
-      return [{ name: 'Nextjs' }]
-    }
-  }
-}
-
-const apolloServer = new ApolloServer({ typeDefs, resolvers })
+const apolloServer = new ApolloServer({typeDefs, resolvers});
 
 export const config = {
   api: {
-    bodyParser: false
-  }
-}
+    bodyParser: false,
+  },
+};
 
-export default apolloServer.createHandler({ path: '/api/graphql' })
+export default apolloServer.createHandler({path: '/api/graphql'});
