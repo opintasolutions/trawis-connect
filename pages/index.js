@@ -2,11 +2,11 @@ import fetch from 'isomorphic-unfetch';
 import {useState, useEffect} from 'react';
 
 const graphqlQuery = `
-  {
+{
     users {
-      name
+        name
     } 
-  }
+}
 `;
 
 const Index = () => {
