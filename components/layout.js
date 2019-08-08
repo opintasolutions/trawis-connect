@@ -3,7 +3,7 @@ import Head from 'next/head';
 const Layout = ({children, title}) => (
   <>
     <Head>
-      <title>{title} | Trawis Connect</title>
+      <title>{title ? `${title} |` : ''} Trawis Connect</title>
       <meta charset="utf-8" />
       <meta
         name="viewport"
@@ -17,6 +17,13 @@ const Layout = ({children, title}) => (
         margin: 0;
         padding: 0;
         font-family: 'Inter', sans-serif;
+      }
+      button {
+        border: none;
+        background: #cdd;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 10px;
       }
     `}</style>
   </>

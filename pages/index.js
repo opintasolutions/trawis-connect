@@ -1,60 +1,67 @@
 import fetch from 'isomorphic-unfetch';
-import {useState, useEffect} from 'react';
+import Layout from '../components/layout';
+import apiEndpoint from '../lib/graphqlEndpoint';
 
-const graphqlQuery = `
-{
-    users {
-        name
-    } 
-}
-`;
-
-const Index = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch(`api/graphql`, {
+const Index = ({users}) => {
+  console.log(users);
+  const deleteUser = async _id => {
+    const res = await fetch('/api/graphql', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify({query: graphqlQuery}),
-    })
-      .then(res => res.json())
-      .then(json => {
-        const {
-          data: {users},
-        } = json;
-        setUsers(users);
-      })
-      .catch(err => console.log(err));
-  }, []);
-
+      body: JSON.stringify({
+        query: `mutation { deleteUser(_id: "${_id}"){ name }}`,
+      }),
+    });
+    let {data} = await res.json();
+    console.log(data);
+    await alert(`User removed`);
+    if (location) location.reload();
+  };
   return (
-    <div>
-      {users.length ? (
-        users.map((user, i) => <div key={i}>{user.name}</div>)
-      ) : (
-        <p>Loading....</p>
-      )}
-    </div>
+    <Layout>
+      <div>
+        {users.length ? (
+          users.map((user, i) => (
+            <div key={user._id}>
+              <h3>{user.name}</h3>&nbsp;-&nbsp;<span>{user.email}</span>&nbsp;
+              <button onClick={() => deleteUser(user._id)}>Remove</button>
+            </div>
+          ))
+        ) : (
+          <p>Loading....</p>
+        )}
+      </div>
+    </Layout>
   );
 };
 
-// Index.getInitialProps = async () => {
-//   const response = await fetch('http://localhost:3000/api/graphql', {
-//     method: 'POST',
-//     headers: {
-//       'Content-type': 'application/json',
-//     },
-//     body: JSON.stringify({query: '{ users { name } }'}),
-//   });
+const query = `
+{
+    users {
+        _id
+        name
+        email
+    }
+}
+`;
 
-//   const {
-//     data: {users},
-//   } = await response.json();
+Index.getInitialProps = async ({req}) => {
+  const apiUrl = apiEndpoint(req);
 
-//   return {users};
-// };
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({query}),
+  });
+
+  const {
+    data: {users},
+  } = await response.json();
+  return {users, apiEndpoint};
+};
 
 export default Index;

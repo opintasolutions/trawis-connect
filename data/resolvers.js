@@ -1,4 +1,5 @@
 // import User from './models';
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 let User;
 try {
@@ -27,7 +28,8 @@ const resolvers = {
   Mutation: {
     createUser(_, {input}) {
       let points = 100;
-      let newUser = {...input, points};
+      let password = bcrypt.hashSync(input.password, 10);
+      let newUser = {...input, password, points};
       const user = new User(newUser);
       return user
         .save()
@@ -46,6 +48,9 @@ const resolvers = {
         $push: {followers: follower_id},
       });
       return [follower, following];
+    },
+    deleteUser(_, {_id}) {
+      return User.findByIdAndRemove(_id);
     },
   },
 };

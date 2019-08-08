@@ -24,6 +24,7 @@ const typeDefs = gql`
   type Mutation {
     createUser(input: UserInput!): User
     follow(follower_id: ID!, followed_id: ID!): User
+    deleteUser(_id: ID!): User
   }
 `;
 
