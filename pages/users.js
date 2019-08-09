@@ -1,8 +1,8 @@
 import React from 'react';
 import {gql} from 'apollo-boost';
-import {Query} from 'react-apollo';
+import {useMutation, useQuery} from 'react-apollo';
 
-const GET_USERS = gql`
+const GET_USERS_QUERY = gql`
   query {
     users {
       _id
@@ -12,21 +12,45 @@ const GET_USERS = gql`
   }
 `;
 
-const Users = () => (
-  <Query query={GET_USERS}>
-    {({loading, error, data}) => {
-      if (loading) return <div>Loading...</div>;
-      if (error) return <div>Error :(</div>;
+const DELETE_USER_MUTATION = gql`
+  mutation deleteUser($id: ID!) {
+    deleteUser(_id: $id) {
+      name
+    }
+  }
+`;
 
-      return (
-        <div>
-          {data.users.map(user => (
-            <div key={user._id}>{user.name}</div>
-          ))}
+const Users = () => {
+  const {loading, data, error} = useQuery(GET_USERS_QUERY);
+  const [deleteUser] = useMutation(DELETE_USER_MUTATION);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error! {error.message}</div>;
+  }
+
+  const onRemove = id => {
+    deleteUser({variables: {id}});
+    alert('User Removed');
+    if (location) location.reload();
+  };
+
+  return (
+    <ul>
+      {data.users.map(user => (
+        <div key={user._id}>
+          <li>{user.name}</li>
+          <button onClick={() => onRemove(user._id)}>Remove</button>
         </div>
-      );
-    }}
-  </Query>
-);
+      ))}
+    </ul>
+  );
+};
+
+Users.getInitialProps = () => {
+  return {title: 'Users'};
+};
 
 export default Users;

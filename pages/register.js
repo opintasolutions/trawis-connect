@@ -1,47 +1,35 @@
-import Layout from '../components/layout';
 import {useState, useEffect} from 'react';
+import {useMutation} from 'react-apollo';
+import {gql} from 'apollo-boost';
+
+const CREATE_USER_MUTATION = gql`
+  mutation createUser($name: String!, $email: String!, $password: String!) {
+    createUser(input: {name: $name, email: $email, password: $password}) {
+      _id
+      name
+      points
+    }
+  }
+`;
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const query = `
-    mutation {
-      createUser(input: {name: "${name}", email: "${email}", password: "${password}"}){
-        _id
-        name
-        points
-    }
-  }
-`;
-  const handleSubmit = () => {
-    // useEffect(() => {
-    fetch(`api/graphql`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({query}),
-    })
-      .then(res => {
-        console.log(res);
-        return res.json();
-      })
-      .then(json => {
-        const {data} = json;
-        console.log(data);
-        alert('User Registered');
-        setName('');
-        setEmail('');
-        setPassword('');
-      })
-      .catch(err => console.log(err));
-    // }, [])
+  const [createUser, {data}] = useMutation(CREATE_USER_MUTATION);
+
+  const handleSubmit = async () => {
+    createUser({variables: {name, email, password}});
+    console.log(data);
+    alert('User Registered');
+    setName('');
+    setEmail('');
+    setPassword('');
   };
 
   return (
-    <Layout title="Sign Up">
+    <>
       <div className="container">
         <div className="form-panel">
           <div className="welcome">
@@ -199,8 +187,12 @@ const RegisterPage = () => {
           }
         }
       `}</style>
-    </Layout>
+    </>
   );
+};
+
+RegisterPage.getInitialProps = () => {
+  return {title: 'Sign Up'};
 };
 
 export default RegisterPage;
