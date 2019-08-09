@@ -1,35 +1,17 @@
 import Head from 'next/head';
-import Link from 'next/link';
+import Nav from './nav';
 
 const Layout = ({children, title}) => (
   <>
     <Head>
       <title>{title ? `${title} |` : ''} Trawis Connect</title>
-      <meta charset="utf-8" />
+      <meta charSet="utf-8" />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
     </Head>
-    <nav>
-      <ul>
-        <li>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/register">
-            <a>Sign Up</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/users">
-            <a>Users</a>
-          </Link>
-        </li>
-      </ul>
-    </nav>
+    <Nav />
     <div>{children}</div>
     <style jsx global>{`
       @import url('https://rsms.me/inter/inter.css');
