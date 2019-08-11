@@ -1,31 +1,34 @@
 import {useState} from 'react';
 import {useMutation} from 'react-apollo';
 import {gql} from 'apollo-boost';
+// import jwt from 'jsonwebtoken';
+import cookie from 'cookie';
+import Router from 'next/router';
 
-const CREATE_USER_MUTATION = gql`
-  mutation createUser($name: String!, $email: String!, $password: String!) {
-    createUser(input: {name: $name, email: $email, password: $password}) {
+const SIGN_IN_MUTATION = gql`
+  mutation signIn($email: String!, $password: String!) {
+    signIn(email: $email, password: $password) {
       _id
       name
       points
+      token
     }
   }
 `;
 
-const RegisterPage = () => {
-  const [name, setName] = useState('');
+const LoginPage = ({id}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [signIn] = useMutation(SIGN_IN_MUTATION);
 
-  const [createUser, {data}] = useMutation(CREATE_USER_MUTATION);
-
-  const handleSubmit = async () => {
-    createUser({variables: {name, email, password}});
-    console.log(data);
-    alert('User Registered');
-    setName('');
-    setEmail('');
-    setPassword('');
+  const handleSubmit = () => {
+    signIn({variables: {email, password}}).then(({data}) => {
+      console.log(data.signIn);
+      document.cookie = cookie.serialize('token', data.signIn.token, {
+        maxAge: 30 * 24 * 60 * 60,
+      });
+      Router.push(`/profile/${data.signIn._id}`);
+    });
   };
 
   return (
@@ -36,15 +39,10 @@ const RegisterPage = () => {
             <p>
               Welcome to Trawis Connect!
               <br />
-              Create an Account
+              Please Log In
             </p>
           </div>
           <div className="form">
-            <input
-              placeholder="Name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
             <input
               type="email"
               placeholder="Email"
@@ -57,12 +55,12 @@ const RegisterPage = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
-            <button onClick={handleSubmit}>Sign Up</button>
+            <button onClick={handleSubmit}>Sign In</button>
           </div>
           <div className="footer-stuff">
             <p>
-              <span>Already Have an Account?</span>&nbsp;&nbsp;&nbsp;
-              <a href="#">Sign in Here</a>
+              <span>Don't Have an Account?</span>&nbsp;&nbsp;&nbsp;
+              <a href="#">Register Here</a>
             </p>
             <p className="styled-or">
               <span className="line" />
@@ -191,8 +189,11 @@ const RegisterPage = () => {
   );
 };
 
-RegisterPage.getInitialProps = () => {
-  return {title: 'Sign Up'};
+LoginPage.getInitialProps = ({req}) => {
+  // console.log('Prepare ..............', req.headers.cookie);
+  // let id = jwt.verify(req.headers.cookie, 'secret');
+  // console.log(id);
+  return {title: 'Sign In'};
 };
 
-export default RegisterPage;
+export default LoginPage;
