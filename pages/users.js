@@ -1,6 +1,7 @@
 import React from 'react';
 import {gql} from 'apollo-boost';
 import {useMutation, useQuery} from 'react-apollo';
+import Layout from '../components/layout';
 
 const GET_USERS_QUERY = gql`
   query {
@@ -20,7 +21,7 @@ const DELETE_USER_MUTATION = gql`
   }
 `;
 
-const Users = () => {
+const Users = ({title}) => {
   const {loading, data, error} = useQuery(GET_USERS_QUERY);
   const [deleteUser] = useMutation(DELETE_USER_MUTATION);
 
@@ -38,14 +39,16 @@ const Users = () => {
   };
 
   return (
-    <ul>
-      {data.users.map(user => (
-        <div key={user._id}>
-          <li>{user.name}</li>
-          <button onClick={() => onRemove(user._id)}>Remove</button>
-        </div>
-      ))}
-    </ul>
+    <Layout title={title}>
+      <ul>
+        {data.users.map(user => (
+          <div key={user._id}>
+            <li>{user.name}</li>
+            <button onClick={() => onRemove(user._id)}>Remove</button>
+          </div>
+        ))}
+      </ul>
+    </Layout>
   );
 };
 

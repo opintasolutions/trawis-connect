@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Nav from './nav';
+import cookie from 'cookie';
 
 const Layout = ({children, title}) => (
   <>

@@ -18,7 +18,11 @@ function connectToDb() {
     .catch(err => console.log('There was an error ', err));
 }
 
-const apolloServer = new ApolloServer({typeDefs, resolvers});
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({req}) => ({req}),
+});
 
 export const config = {
   api: {

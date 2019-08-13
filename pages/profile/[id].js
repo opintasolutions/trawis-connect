@@ -1,7 +1,8 @@
-import jwt from 'jsonwebtoken';
-import {useQuery} from 'react-apollo';
+import {useQuery, useApolloClient} from 'react-apollo';
 import {gql} from 'apollo-boost';
-import mongoose from 'mongoose';
+import cookie from 'cookie';
+import redirect from '../../lib/redirect';
+import Layout from '../../components/layout';
 
 const USER_PROFILE_QUERY = gql`
   query user($id: ID!) {
@@ -19,8 +20,9 @@ const USER_PROFILE_QUERY = gql`
     }
   }
 `;
-const ProfilePage = ({user}) => {
-  console.log(user.id);
+const ProfilePage = ({user, title}) => {
+  // console.log(user.id);
+  const client = useApolloClient();
 
   const {data, loading, error} = useQuery(USER_PROFILE_QUERY, {
     variables: {id: user.id},
@@ -33,16 +35,37 @@ const ProfilePage = ({user}) => {
     return <div>ERROR! {error.message}</div>;
   }
 
+  const signOut = () => {
+    document.cookie = cookie.serialize('token', '', {
+      path: '/',
+      maxAge: -1,
+    });
+    // client.writeData({data: {loggedIn: false, id: null}});
+    console.log('you wanna sign out ?');
+    redirect({}, '/login');
+  };
+
   return (
-    <div>
-      {data.user.name} {data.user.email} {data.user.followers.length}{' '}
-      {data.user.following.length}
-    </div>
+    <Layout title={title}>
+      <div>
+        {data.user.name} <br /> {data.user.email} {data.user.followers.length}{' '}
+        {data.user.following.length}
+        <button onClick={signOut}>Sign Out</button>
+      </div>
+    </Layout>
   );
 };
 
-ProfilePage.getInitialProps = ({req, query}) => {
-  return {user: query};
+ProfilePage.getInitialProps = ({req, query, apolloClient}) => {
+  // console.log(apolloClient);
+  if (req) {
+    return {
+      user: query,
+      title: 'Profile',
+      id: cookie.parse(req.headers.cookie || '').token,
+    };
+  }
+  return {user: query, title: 'Profile'};
 };
 
 export default ProfilePage;
