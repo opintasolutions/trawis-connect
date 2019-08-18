@@ -17,6 +17,7 @@ const DELETE_USER_MUTATION = gql`
   mutation deleteUser($id: ID!) {
     deleteUser(_id: $id) {
       name
+      email
     }
   }
 `;
@@ -43,7 +44,9 @@ const Users = ({title}) => {
       <ul>
         {data.users.map(user => (
           <div key={user._id}>
-            <li>{user.name}</li>
+            <li>
+              <b>{user.name}</b> {user.email}{' '}
+            </li>
             <button onClick={() => onRemove(user._id)}>Remove</button>
           </div>
         ))}

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useMutation} from 'react-apollo';
 import {gql} from 'apollo-boost';
 import AuthInStyles from '../components/authInStyles';
+import Link from 'next/link';
 import Layout from '../components/layout';
 
 const CREATE_USER_MUTATION = gql`
@@ -65,7 +66,7 @@ const RegisterPage = ({title}) => {
             <div className="footer-stuff">
               <p>
                 <span>Already Have an Account?</span>&nbsp;&nbsp;&nbsp;
-                <a href="#">Sign in Here</a>
+                <Link href="/login">Sign in Here</Link>
               </p>
               <p className="styled-or">
                 <span className="line" />

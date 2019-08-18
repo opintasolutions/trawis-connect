@@ -1,8 +1,9 @@
 import {useState} from 'react';
 import {useApolloClient, useMutation} from 'react-apollo';
 import {gql} from 'apollo-boost';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
+import Link from 'next/link';
 import redirect from '../lib/redirect';
 import AuthInStyles from '../components/authInStyles';
 import Layout from '../components/layout';
@@ -28,7 +29,7 @@ const LoginPage = ({id, title}) => {
         path: '/',
         maxAge: 30 * 24 * 60 * 60,
       });
-      // client.writeData({data: {loggedIn: true, id: signIn._id.toString()}});
+      client.writeData({data: {isLoggedIn: true}});
     },
   });
 
@@ -69,7 +70,7 @@ const LoginPage = ({id, title}) => {
             <div className="footer-stuff">
               <p>
                 <span>Don't Have an Account?</span>&nbsp;&nbsp;&nbsp;
-                <a href="#">Register Here</a>
+                <Link href="/register">Register Here</Link>
               </p>
               <p className="styled-or">
                 <span className="line" />

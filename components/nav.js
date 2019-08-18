@@ -1,7 +1,8 @@
 import Link from 'next/link';
+import cookie from 'cookie';
 import Router from 'next/router';
 import redirect from '../lib/redirect';
-import {useQuery} from 'react-apollo';
+import {useQuery, useApolloClient} from 'react-apollo';
 import {gql} from 'apollo-boost';
 
 const GET_USER = gql`
@@ -10,55 +11,90 @@ const GET_USER = gql`
       _id
       name
     }
+    isLoggedIn @client
   }
 `;
 
 const Nav = () => {
   const {data} = useQuery(GET_USER);
-  console.log(data);
+  const client = useApolloClient();
+  console.log(data && data.isLoggedIn);
   return (
-    <nav>
-      <li>
-        <a onClick={() => Router.push('/')}>Home</a>
-      </li>
-      {data && !data.me ? (
-        <>
-          <li>
-            <a onClick={() => redirect({}, '/register')}>Sign Up</a>
-          </li>
-          <li>
-            <a onClick={() => redirect({}, '/login')}>Sign In</a>
-          </li>
-        </>
-      ) : (
+    <div className="nav">
+      <div>
         <li>
-          <a onClick={() => redirect({}, `/profile/${data.me._id}`)}>{`${
-            data ? data.me.name : ''
-          }'s Profile`}</a>
+          <a onClick={() => Router.push('/')}>Home</a>
         </li>
-      )}
-      <li>
-        <a onClick={() => redirect({}, '/users')}>Users</a>
-      </li>
+        <li>
+          <a onClick={() => redirect({}, '/users')}>Users</a>
+        </li>
+      </div>
+      <div>
+        {data ? (
+          data.isLoggedIn ? (
+            <>
+              <li>
+                <a onClick={() => redirect({}, `/profile/${data.me._id}`)}>
+                  {data ? data.me.name.split(' ')[0] : ''}
+                </a>
+              </li>
+              <li>
+                <a
+                  onClick={() => {
+                    document.cookie = cookie.serialize('token', '', {
+                      path: '/',
+                      maxAge: -1,
+                    });
+                    client.writeData({data: {isLoggedIn: false}});
+                    redirect({}, '/login');
+                  }}>
+                  Sign Out
+                </a>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+              </li>
+              <li>
+                <a onClick={() => redirect({}, '/login')}>Sign In</a>
+              </li>
+            </>
+          )
+        ) : (
+          <>
+            <li>
+              <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+            </li>
+            <li>
+              <a onClick={() => redirect({}, '/login')}>Sign In</a>
+            </li>
+          </>
+        )}
+      </div>
       <style jsx>{`
-        nav {
+        .nav {
           display: flex;
-          justify-content: flex-start;
+          justify-content: space-between;
           padding: 8px;
           background: #19305a;
+        }
+        .nav div {
+          display: flex;
         }
         li {
           list-style: none;
           font-size: 15px;
           margin: 0 10px;
         }
-        nav a {
+        .nav a {
           text-decoration: none;
           color: white;
           cursor: pointer;
         }
       `}</style>
-    </nav>
+    </div>
   );
 };
 export default Nav;
