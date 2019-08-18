@@ -28,16 +28,16 @@ const Index = ({title}) => (
         <style jsx>{`
           div {
             padding: 10px;
+            background: #264172;
           }
           h1 {
             font-weight: normal;
           }
           .welcome-section {
-            height: 100vh;
-            background: #264172;
             display: flex;
             align-items: center;
             justify-content: space-around;
+            height: 100vh;
           }
           .welcome-text {
             color: white;

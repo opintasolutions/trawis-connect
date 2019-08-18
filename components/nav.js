@@ -21,12 +21,16 @@ const Nav = () => {
   console.log(data && data.isLoggedIn);
   return (
     <div className="nav">
-      <div>
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <img src="/static/tconnect.svg" width="120" />
         <li>
           <a onClick={() => Router.push('/')}>Home</a>
         </li>
         <li>
           <a onClick={() => redirect({}, '/users')}>Users</a>
+        </li>
+        <li>
+          <a onClick={() => redirect({}, '/contact')}>Contact</a>
         </li>
       </div>
       <div>
@@ -34,41 +38,53 @@ const Nav = () => {
           data.isLoggedIn ? (
             <>
               <li>
-                <a onClick={() => redirect({}, `/profile/${data.me._id}`)}>
-                  {data ? data.me.name.split(' ')[0] : ''}
-                </a>
+                <button>
+                  <a onClick={() => redirect({}, `/profile/${data.me._id}`)}>
+                    {data ? data.me.name.split(' ')[0] : ''}
+                  </a>
+                </button>
               </li>
               <li>
-                <a
-                  onClick={() => {
-                    document.cookie = cookie.serialize('token', '', {
-                      path: '/',
-                      maxAge: -1,
-                    });
-                    client.writeData({data: {isLoggedIn: false}});
-                    redirect({}, '/login');
-                  }}>
-                  Sign Out
-                </a>
+                <button>
+                  <a
+                    onClick={() => {
+                      document.cookie = cookie.serialize('token', '', {
+                        path: '/',
+                        maxAge: -1,
+                      });
+                      client.writeData({data: {isLoggedIn: false}});
+                      redirect({}, '/login');
+                    }}>
+                    Sign Out
+                  </a>
+                </button>
               </li>
             </>
           ) : (
             <>
               <li>
-                <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+                <button>
+                  <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+                </button>
               </li>
               <li>
-                <a onClick={() => redirect({}, '/login')}>Sign In</a>
+                <button>
+                  <a onClick={() => redirect({}, '/login')}>Sign In</a>
+                </button>
               </li>
             </>
           )
         ) : (
           <>
             <li>
-              <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+              <button>
+                <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+              </button>
             </li>
             <li>
-              <a onClick={() => redirect({}, '/login')}>Sign In</a>
+              <button>
+                <a onClick={() => redirect({}, '/login')}>Sign In</a>
+              </button>
             </li>
           </>
         )}
@@ -77,8 +93,9 @@ const Nav = () => {
         .nav {
           display: flex;
           justify-content: space-between;
+          align-items: center;
           padding: 8px;
-          background: #19305a;
+          background: #264172;
         }
         .nav div {
           display: flex;
@@ -87,6 +104,16 @@ const Nav = () => {
           list-style: none;
           font-size: 15px;
           margin: 0 10px;
+        }
+        li button {
+          padding: 10px;
+          width: 90px;
+          background: transparent;
+          border: 1px solid lightblue;
+          border-radius: 3px;
+        }
+        img {
+          margin: 10px 20px;
         }
         .nav a {
           text-decoration: none;
