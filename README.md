@@ -1,42 +1,21 @@
-# API routes with GraphQL server
+# Trawis Connect Web
 
-## How to use
+A Social Media for Travellers.
 
-### Using `create-next-app`
+## TODO:
 
-Execute [`create-next-app`](https://github.com/segmentio/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
+#### Phase One
 
-```bash
-npx create-next-app --example api-routes-graphql api-routes-graphql-app
-# or
-yarn create next-app --example api-routes-graphql api-routes-graphql-app
-```
+- Static Pages:
+  - [x] Home Page
+  - [x] About Page
+  - [x] Contact Page
+- User Authentication (cookie-based):
+  - [x] SignUp
+  - [x] Login
+  - [x] Profile Page
+- Social Media:
+  - [x] Followers
+  - [x] Following
 
-### Download manually
-
-Download the example:
-
-```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/api-routes-graphql
-cd api-routes-graphql
-```
-
-Install it and run:
-
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
-```
-
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download))
-
-```bash
-now
-```
-
-## The idea behind the example
-
-Next.js ships with [API routes](https://github.com/zeit/next.js#api-routes), which provide an easy solution to build your own `API`. This example shows their usage alongside [apollo-server-micro](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-micro) to provide simple GraphQL server consumed by Next.js app.
+**Phase One ends before 20 August 2019**
