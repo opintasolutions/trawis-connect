@@ -22,70 +22,55 @@ const Nav = () => {
   return (
     <div className="nav">
       <div style={{display: 'flex', alignItems: 'center'}}>
-        <img src="/static/tconnect.svg" width="120" />
-        <li>
-          <a onClick={() => Router.push('/')}>Home</a>
-        </li>
+        <Link href="/">
+          <img src="/static/tconnect.svg" alt="logo" width="100" />
+        </Link>
         <li>
           <a onClick={() => redirect({}, '/users')}>Users</a>
         </li>
         <li>
           <a onClick={() => redirect({}, '/contact')}>Contact</a>
         </li>
+        <li>
+          <a onClick={() => redirect({}, '/about')}>About</a>
+        </li>
       </div>
       <div>
         {data ? (
           data.isLoggedIn ? (
             <>
-              <li>
-                <button>
-                  <a onClick={() => redirect({}, `/profile/${data.me._id}`)}>
-                    {data ? data.me.name.split(' ')[0] : ''}
-                  </a>
-                </button>
-              </li>
-              <li>
-                <button>
-                  <a
-                    onClick={() => {
-                      document.cookie = cookie.serialize('token', '', {
-                        path: '/',
-                        maxAge: -1,
-                      });
-                      client.writeData({data: {isLoggedIn: false}});
-                      redirect({}, '/login');
-                    }}>
-                    Sign Out
-                  </a>
-                </button>
-              </li>
+              <a onClick={() => redirect({}, `/profile/${data.me._id}`)}>
+                <button>{data ? data.me.name.split(' ')[0] : ''}</button>
+              </a>
+              <a
+                onClick={() => {
+                  document.cookie = cookie.serialize('token', '', {
+                    path: '/',
+                    maxAge: -1,
+                  });
+                  client.writeData({data: {isLoggedIn: false}});
+                  redirect({}, '/login');
+                }}>
+                <button>Sign Out</button>
+              </a>
             </>
           ) : (
             <>
-              <li>
+              <Link href="/register">
                 <button>
-                  <a onClick={() => redirect({}, '/register')}>Sign Up</a>
+                  <a>Sign Up</a>
                 </button>
-              </li>
-              <li>
+              </Link>
+              <Link href="/login">
                 <button>
-                  <a onClick={() => redirect({}, '/login')}>Sign In</a>
+                  <a>Sign In</a>
                 </button>
-              </li>
+              </Link>
             </>
           )
         ) : (
           <>
-            <li>
-              <button>
-                <a onClick={() => redirect({}, '/register')}>Sign Up</a>
-              </button>
-            </li>
-            <li>
-              <button>
-                <a onClick={() => redirect({}, '/login')}>Sign In</a>
-              </button>
-            </li>
+            <li>Waiting ... </li>
           </>
         )}
       </div>
@@ -96,6 +81,8 @@ const Nav = () => {
           align-items: center;
           padding: 8px;
           background: #264172;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+          overflow: auto;
         }
         .nav div {
           display: flex;
@@ -103,17 +90,18 @@ const Nav = () => {
         li {
           list-style: none;
           font-size: 15px;
-          margin: 0 10px;
+          margin: 0 6px;
         }
-        li button {
-          padding: 10px;
+        button {
           width: 90px;
           background: transparent;
-          border: 1px solid lightblue;
+          border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 3px;
+          color: white;
         }
         img {
           margin: 10px 20px;
+          cursor: pointer;
         }
         .nav a {
           text-decoration: none;

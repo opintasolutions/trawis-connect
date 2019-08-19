@@ -1,7 +1,7 @@
 import Layout from '../components/layout';
 
 const ContactPage = () => (
-  <Layout>
+  <Layout title="Contact">
     <div className="container">
       <div className="contact-info">
         <div>
@@ -118,7 +118,7 @@ const ContactPage = () => (
             flex-wrap: wrap;
           }
           .container img {
-            width: 270px;
+            width: 290px;
           }
         }
       `}</style>

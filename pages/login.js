@@ -70,7 +70,9 @@ const LoginPage = ({id, title}) => {
             <div className="footer-stuff">
               <p>
                 <span>Don't Have an Account?</span>&nbsp;&nbsp;&nbsp;
-                <Link href="/register">Register Here</Link>
+                <Link href="/register">
+                  <a>Register Here</a>
+                </Link>
               </p>
               <p className="styled-or">
                 <span className="line" />

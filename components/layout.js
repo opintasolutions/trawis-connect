@@ -11,11 +11,11 @@ const Layout = ({children, title}) => (
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
+      <style>@import url('https://rsms.me/inter/inter.css');</style>
     </Head>
     <Nav />
     <div>{children}</div>
     <style jsx global>{`
-      @import url('https://rsms.me/inter/inter.css');
       body {
         margin: 0;
         padding: 0;
@@ -28,6 +28,9 @@ const Layout = ({children, title}) => (
         border-radius: 4px;
         cursor: pointer;
         padding: 10px;
+      }
+      h1 {
+        font-weight: normal;
       }
     `}</style>
   </>

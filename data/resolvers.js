@@ -19,7 +19,7 @@ const resolvers = {
       return User.findById(id);
     },
     me(_, __, {req}) {
-      if (req.headers.cookie) {
+      if (req.headers.cookie && cookie.parse(req.headers.cookie).token) {
         let token = cookie.parse(req.headers.cookie).token;
         let user_id = jwt.verify(token, 'secret').id;
         console.log(user_id);

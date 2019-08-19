@@ -66,7 +66,9 @@ const RegisterPage = ({title}) => {
             <div className="footer-stuff">
               <p>
                 <span>Already Have an Account?</span>&nbsp;&nbsp;&nbsp;
-                <Link href="/login">Sign in Here</Link>
+                <Link href="/login">
+                  <a>Sign in Here</a>
+                </Link>
               </p>
               <p className="styled-or">
                 <span className="line" />
