@@ -25,7 +25,7 @@ A Social Media for Travellers.
   - [ ] Trip Details
   - [ ] Blog
   - [ ] Blog Post
-  - [ ]Blog Editor
+  - [ ] Blog Editor
 - Data:
   - [ ] Create Trip
   - [ ] Update Trip
