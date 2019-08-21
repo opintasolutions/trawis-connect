@@ -18,4 +18,20 @@ A Social Media for Travellers.
   - [x] Followers
   - [x] Following
 
-**Phase One ends before 20 August 2019**
+#### Phase Two
+
+- Pages:
+- [] My Trips
+- [] Trip Details
+- [] Blog
+- [] Blog Post
+- [] Blog Editor
+- Data:
+- [] Create Trip
+- [] Update Trip
+- [] Create Blog
+- [] Update Blog
+- Social Media:
+- [] Add/Remove people in Trip
+- [] Trip Notification
+- [] Blog Notification
