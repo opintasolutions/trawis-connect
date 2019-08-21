@@ -21,17 +21,17 @@ A Social Media for Travellers.
 #### Phase Two
 
 - Pages:
-- [ ] My Trips
-- [ ] Trip Details
-- [ ] Blog
-- [ ] Blog Post
-- [ ]Blog Editor
+  - [ ] My Trips
+  - [ ] Trip Details
+  - [ ] Blog
+  - [ ] Blog Post
+  - [ ]Blog Editor
 - Data:
-- [ ] Create Trip
-- [ ] Update Trip
-- [ ] Create Blog
-- [ ] Update Blog
+  - [ ] Create Trip
+  - [ ] Update Trip
+  - [ ] Create Blog
+  - [ ] Update Blog
 - Social Media:
-- [ ] Add/Remove people in Trip
-- [ ] Trip Notification
-- [ ] Blog Notification
+  - [ ] Add/Remove people in Trip
+  - [ ] Trip Notification
+  - [ ] Blog Notification
